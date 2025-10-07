@@ -1,0 +1,42 @@
+{
+  "name": "emotion-recognition-frontend",
+  "version": "1.0.0",
+  "description": "A modern web application for emotion recognition and progression tracking in therapy sessions using machine learning",
+  "main": "index.html",
+  "scripts": {
+    "start": "python start_server.py",
+    "serve": "python -m http.server 8000",
+    "deploy:netlify": "netlify deploy --prod --dir .",
+    "deploy:vercel": "vercel --prod",
+    "build:zip": "powershell -command \"Compress-Archive -Force -Path '*.html', 'css', 'js', 'assets', 'README.md', '_redirects' -DestinationPath 'emotion-recognition-deploy.zip'\"",
+    "test:local": "start login.html"
+  },
+  "keywords": [
+    "emotion-recognition",
+    "therapy",
+    "machine-learning",
+    "mental-health",
+    "audio-analysis",
+    "healthcare",
+    "web-application",
+    "chart.js",
+    "frontend"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "homepage": "https://github.com/yourusername/emotion-recognition-frontend",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/emotion-recognition-frontend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/emotion-recognition-frontend/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0",
+    "vercel": "^32.0.0"
+  }
+}
