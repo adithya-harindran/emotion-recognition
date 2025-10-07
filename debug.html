@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug - File Loading Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Vercel Deployment Debug Page</h1>
+    <p>This page will help identify what's not loading properly on your Vercel deployment.</p>
+
+    <div id="css-test" class="test-result warning">
+        <h3>CSS Loading Test</h3>
+        <p>Testing if css/styles.css is loading...</p>
+    </div>
+
+    <div id="js-test" class="test-result warning">
+        <h3>JavaScript Loading Test</h3>
+        <p>Testing if js/app.js is loading...</p>
+    </div>
+
+    <div id="chart-test" class="test-result warning">
+        <h3>Chart.js CDN Test</h3>
+        <p>Testing if Chart.js CDN is accessible...</p>
+    </div>
+
+    <div id="file-structure" class="test-result warning">
+        <h3>Expected File Structure</h3>
+        <pre>
+Your repository should have:
+├── login.html
+├── index.html  
+├── css/
+│   └── styles.css
+├── js/
+│   ├── login.js
+│   └── app.js
+├── assets/
+├── vercel.json (new file to fix issues)
+└── debug.html (this file)
+        </pre>
+    </div>
+
+    <div id="solutions" class="test-result warning">
+        <h3>🛠️ Quick Fixes</h3>
+        <ol>
+            <li><strong>Add vercel.json</strong>: Upload the vercel.json file to your repository</li>
+            <li><strong>Check file structure</strong>: Ensure css/ and js/ folders are in the root</li>
+            <li><strong>Redeploy</strong>: After adding vercel.json, Vercel will redeploy automatically</li>
+            <li><strong>Clear cache</strong>: Try hard refresh (Ctrl+F5) or incognito mode</li>
+        </ol>
+    </div>
+
+    <script>
+        // Test if CSS is loading
+        function testCSS() {
+            const testDiv = document.createElement('div');
+            testDiv.className = 'login-body'; // Class from your CSS
+            document.body.appendChild(testDiv);
+            
+            const styles = window.getComputedStyle(testDiv);
+            const hasStyles = styles.background !== '' || styles.backgroundColor !== '';
+            
+            document.body.removeChild(testDiv);
+            
+            const cssTest = document.getElementById('css-test');
+            if (hasStyles) {
+                cssTest.className = 'test-result success';
+                cssTest.innerHTML = '<h3>✅ CSS Loading Test</h3><p>CSS is loading correctly!</p>';
+            } else {
+                cssTest.className = 'test-result error';
+                cssTest.innerHTML = '<h3>❌ CSS Loading Test</h3><p>CSS is NOT loading. Check if css/styles.css exists in your repository.</p>';
+            }
+        }
+
+        // Test if Chart.js CDN is loading
+        function testChartJS() {
+            const chartTest = document.getElementById('chart-test');
+            if (typeof Chart !== 'undefined') {
+                chartTest.className = 'test-result success';
+                chartTest.innerHTML = '<h3>✅ Chart.js CDN Test</h3><p>Chart.js is loading correctly!</p>';
+            } else {
+                chartTest.className = 'test-result error';
+                chartTest.innerHTML = '<h3>❌ Chart.js CDN Test</h3><p>Chart.js CDN is not loading. Check your internet connection.</p>';
+            }
+        }
+
+        // Test if JavaScript files can be loaded
+        function testJS() {
+            const jsTest = document.getElementById('js-test');
+            
+            // Try to load the login.js file
+            fetch('js/login.js')
+                .then(response => {
+                    if (response.ok) {
+                        jsTest.className = 'test-result success';
+                        jsTest.innerHTML = '<h3>✅ JavaScript Loading Test</h3><p>JavaScript files are accessible!</p>';
+                    } else {
+                        jsTest.className = 'test-result error';
+                        jsTest.innerHTML = '<h3>❌ JavaScript Loading Test</h3><p>JavaScript files are NOT accessible. Check if js/ folder exists in your repository.</p>';
+                    }
+                })
+                .catch(error => {
+                    jsTest.className = 'test-result error';
+                    jsTest.innerHTML = '<h3>❌ JavaScript Loading Test</h3><p>JavaScript files failed to load: ' + error.message + '</p>';
+                });
+        }
+
+        // Run tests when page loads
+        window.onload = function() {
+            setTimeout(testCSS, 100);
+            setTimeout(testChartJS, 200);
+            setTimeout(testJS, 300);
+        };
+    </script>
+
+    <hr>
+    <h2>🔗 Quick Links</h2>
+    <p><a href="login.html">Go to Login Page</a> | <a href="index.html">Go to Main App</a></p>
+    
+    <h2>📝 Instructions</h2>
+    <ol>
+        <li>Upload the new <code>vercel.json</code> file to your GitHub repository</li>
+        <li>Vercel will automatically redeploy (wait 2-3 minutes)</li>
+        <li>Refresh this page to test again</li>
+        <li>If still not working, check your repository file structure</li>
+    </ol>
+</body>
+</html>
